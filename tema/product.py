@@ -11,6 +11,7 @@ from dataclasses import dataclass
 
 @dataclass(init=True, repr=True, order=False, frozen=True)
 class Product:
+
     """
     Class that represents a product.
     """

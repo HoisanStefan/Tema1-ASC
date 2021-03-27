@@ -5,8 +5,9 @@ Computer Systems Architecture Course
 Assignment 1
 March 2021
 """
-
+import time
 from threading import Thread
+from time import sleep
 
 
 class Consumer(Thread):
@@ -31,7 +32,31 @@ class Consumer(Thread):
         :type kwargs:
         :param kwargs: other arguments that are passed to the Thread's __init__()
         """
-        pass
+        super().__init__(**kwargs)
+        self.carts = carts
+        self.market = marketplace
+        self.wait_time = retry_wait_time
 
     def run(self):
-        pass
+        for cart in self.carts:
+            index = self.market.new_cart()
+            count = 0
+            for _ in cart:
+                action = cart[count]["type"]
+                product = cart[count]["product"]
+                quantity = cart[count]["quantity"]
+                i = 0
+                while i < quantity:
+                    if "add" in action:
+                        ok = self.market.add_to_cart(index, product)
+                        if not ok:
+                            sleep(self.wait_time)
+                        else:
+                            i += 1
+                    else:
+                        if "remove" in action:
+                            self.market.remove_from_cart(index, product)
+                            i += 1
+                count += 1
+            lst_prod = self.market.place_order(index)
+

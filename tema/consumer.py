@@ -37,6 +37,11 @@ class Consumer(Thread):
         self.wait_time = retry_wait_time
 
     def run(self):
+        """
+        For every cart in this consumer's carts, we extract the actions types,
+        the quantity needed and the product's name. Then we call the functions
+        in order to create the cart with all of the required products.
+        """
         for cart in self.carts:
             index = self.market.new_cart()
             count = 0

@@ -38,6 +38,10 @@ class Producer(Thread):
         self.wait_time = republish_wait_time
 
     def run(self):
+        """
+        Getting the producer id after registering him and then publishing his products
+        list in an infinite loop
+        """
         producer_id = self.market.register_producer()
         while True:
             for (product, quantity, wait_product) in self.products:

@@ -5,7 +5,6 @@ Computer Systems Architecture Course
 Assignment 1
 March 2021
 """
-import time
 from threading import Thread
 from time import sleep
 
@@ -58,5 +57,4 @@ class Consumer(Thread):
                             self.market.remove_from_cart(index, product)
                             i += 1
                 count += 1
-            lst_prod = self.market.place_order(index)
-
+            self.market.place_order(index)

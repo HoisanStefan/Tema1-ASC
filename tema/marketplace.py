@@ -58,6 +58,7 @@ class Marketplace:
         else:
             self.products.append(product)
             self.queues[int(producer_id)] += 1
+            self.producers[product] = int(producer_id)
             return True
 
     def new_cart(self):
@@ -88,6 +89,7 @@ class Marketplace:
                 return False
             else:
                 self.products.remove(product)
+                self.queues[self.producers[product]] -= 1
                 self.carts[cart_id].append(product)
                 return True
 
@@ -104,6 +106,7 @@ class Marketplace:
         with self.lock_add_remove:
             if product in self.carts[cart_id]:
                 self.carts[cart_id].remove(product)
+                self.queues[self.producers[product]] += 1
                 self.products.append(product)
 
     def place_order(self, cart_id):

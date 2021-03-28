@@ -5,7 +5,6 @@ Computer Systems Architecture Course
 Assignment 1
 March 2021
 """
-import time
 from threading import Thread
 from time import sleep
 
@@ -42,6 +41,7 @@ class Producer(Thread):
         Getting the producer id after registering him and then publishing his products
         list in an infinite loop
         """
+
         producer_id = self.market.register_producer()
         while True:
             for (product, quantity, wait_product) in self.products:

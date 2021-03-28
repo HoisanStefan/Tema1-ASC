@@ -61,8 +61,7 @@ class Marketplace:
         :param product: the Product that will be published in the Marketplace
 
         :returns True or False. If the caller receives False, it should wait and then try again.
-        """
-        """
+
         A product that's been published takes space from the producer's queue. We can no longer
         publish products when the queue is full and if there is space in the queue, we append
         the product to the market's available products. We mark which producer is responsible for
@@ -81,8 +80,7 @@ class Marketplace:
         Creates a new cart for the consumer
 
         :returns an int representing the cart_id
-        """
-        """
+
         We need to synchronize the process of creating a cart. We initialize a new cart and
         increase the carts count.
         """

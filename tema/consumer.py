@@ -42,6 +42,7 @@ class Consumer(Thread):
         the quantity needed and the product's name. Then we call the functions
         in order to create the cart with all of the required products.
         """
+
         for cart in self.carts:
             index = self.market.new_cart()
             count = 0

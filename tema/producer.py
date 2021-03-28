@@ -46,8 +46,8 @@ class Producer(Thread):
         while True:
             for (product, quantity, wait_product) in self.products:
                 for _ in range(quantity):
-                    ok = self.market.publish(producer_id, product)
-                    if ok:
+                    value = self.market.publish(producer_id, product)
+                    if value:
                         sleep(wait_product)
                     else:
                         sleep(self.wait_time)

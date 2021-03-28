@@ -53,8 +53,8 @@ class Consumer(Thread):
                 i = 0
                 while i < quantity:
                     if "add" in action:
-                        ok = self.market.add_to_cart(index, product)
-                        if not ok:
+                        value = self.market.add_to_cart(index, product)
+                        if not value:
                             sleep(self.wait_time)
                         else:
                             i += 1

@@ -19,8 +19,7 @@ class Marketplace:
 
         :type queue_size_per_producer: Int
         :param queue_size_per_producer: the maximum size of a queue associated with each producer
-        """
-        """
+
         queue_size = max queue size for every producer
         queues = array of the current queue state of every producer
         products = the products available currently in the market
@@ -32,23 +31,19 @@ class Marketplace:
         self.queues = []
         self.products = []
         self.no_of_carts = 0
-        self.no_of_producers = 0
         self.producers = {}
         self.carts = {}
         self.lock_add_remove = Lock()
-        self.lock_register = Lock()
         self.lock_place_order = Lock()
         self.lock_new_cart = Lock()
 
     def register_producer(self):
         """
         Returns an id for the producer that calls this.
-        For every new producer, we add a new queue. We need a lock for the incrementation
+        For every new producer, we add a new queue.
         """
-        with self.lock_register:
-            self.no_of_producers += 1
-            self.queues.append(0)
-        return self.no_of_producers - 1
+        self.queues.append(0)
+        return len(self.queues) - 1
 
     def publish(self, producer_id, product):
         """
@@ -69,11 +64,11 @@ class Marketplace:
         """
         if self.queues[int(producer_id)] >= self.queue_size:
             return False
-        else:
-            self.products.append(product)
-            self.queues[int(producer_id)] += 1
-            self.producers[product] = int(producer_id)
-            return True
+
+        self.products.append(product)
+        self.queues[int(producer_id)] += 1
+        self.producers[product] = int(producer_id)
+        return True
 
     def new_cart(self):
         """
@@ -100,19 +95,18 @@ class Marketplace:
         :param product: the product to add to cart
 
         :returns True or False. If the caller receives False, it should wait and then try again
-        """
-        """
+
         We remove the product from the market (1 quantity) and we free the space from the
         producer's queue. We then append the product to the cart's products.
         """
         with self.lock_add_remove:
             if product not in self.products:
                 return False
-            else:
-                self.products.remove(product)
-                self.queues[self.producers[product]] -= 1
-                self.carts[cart_id].append(product)
-                return True
+
+            self.products.remove(product)
+            self.queues[self.producers[product]] -= 1
+            self.carts[cart_id].append(product)
+            return True
 
     def remove_from_cart(self, cart_id, product):
         """
@@ -123,8 +117,7 @@ class Marketplace:
 
         :type product: Product
         :param product: the product to remove from cart
-        """
-        """
+
         We add the product to the market (1 quantity) and we take the space from the
         producer's queue. We then remove the product to the cart's products.
         """
@@ -140,8 +133,7 @@ class Marketplace:
 
         :type cart_id: Int
         :param cart_id: id cart
-        """
-        """
+
         We need to synchronize the prints with a lock. We store the products list
         from the cart and then we delete the cart from the array. Then, we print the list
         and return in
